@@ -52,4 +52,8 @@ void init_gpio(GPIO_Typedef_t *GPIO, uint8_t pin, uint8_t mode, uint8_t type, ui
 void set_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
 void clear_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
 uint8_t read_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
+#define GPIO_MODE_INPUT 0x00U
+#define GPIO_MODE_OUTPUT 0x01U
+#define GPIO_MODE_AF 0x02U
+#define GPIO_MODE_ANALOG 0x03U
 #endif

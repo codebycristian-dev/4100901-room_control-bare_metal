@@ -37,3 +37,24 @@ uint8_t read_gpio(GPIO_Typedef_t *GPIO, uint8_t pin)
     }
     return 0;
 }
+void gpio_setup_pin(GPIO_Typedef_t *GPIO, uint8_t pin, uint8_t mode, uint8_t af)
+{
+    // 1. Configurar el modo (bits [1:0] de MODER)
+    GPIO->MODER &= ~(0x3U << (pin * 2U));
+    GPIO->MODER |= ((mode & 0x3U) << (pin * 2U));
+
+    // 2. Si el modo es AF, configurar el AFR correspondiente
+    if (mode == GPIO_MODE_AF)
+    {
+        if (pin < 8U)
+        {
+            GPIO->AFRL &= ~(0xFU << (pin * 4U));
+            GPIO->AFRL |= ((uint32_t)(af & 0xFU) << (pin * 4U));
+        }
+        else
+        {
+            GPIO->AFRH &= ~(0xFU << ((pin - 8U) * 4U));
+            GPIO->AFRH |= ((uint32_t)(af & 0xFU) << ((pin - 8U) * 4U));
+        }
+    }
+}

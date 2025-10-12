@@ -2,7 +2,8 @@
 #include "systick.h"
 #include "rcc.h"
 #include "uart.h"
-#include "nvic.h" // Agregado: para habilitar IRQs
+#include "nvic.h"
+#include "tim.h" // Agregado: para habilitar IRQs
 
 
 static volatile uint32_t ms_counter = 0;
@@ -20,12 +21,17 @@ int main(void)
     init_gpio_uart();
     init_uart();
 
+    // >>> NUEVO: PWM en PA6 (TIM3_CH1, AF2), 1 kHz y duty al 50 %
+    tim3_ch1_pwm_init(1000U);
+    tim3_ch1_pwm_set_duty_cycle(50U);
+    // <<<
+    
     // Habilitar interrupciones externas
     nvic_exti_pc13_button_enable();
     nvic_usart2_irq_enable();
 
     // Mensaje de inicio
-    uart_send_string("SOs una sapa!\r\n");
+    uart_send_string("Se inició el programa\r\n");
 
     while (1)
     {

@@ -53,5 +53,5 @@ typedef struct
 
 void rcc_init(void);
 void rcc_syscfg_clock_enable(void);
-
+void rcc_tim3_clock_enable(void);
 #endif
