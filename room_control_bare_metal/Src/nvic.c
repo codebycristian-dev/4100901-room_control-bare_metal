@@ -1,35 +1,73 @@
 #include "nvic.h"
-#include "rcc.h" // Para rcc_syscfg_clock_enable
+#include "gpio.h"
+#include "room_control.h"
 #include "uart.h"
-static void nvic_enable_irq(uint32_t IRQn)
-{
-    NVIC->ISER[IRQn / 32U] |= (1UL << (IRQn % 32U));
-}
-static void nvic_set_priority(uint32_t IRQn, uint8_t priority)
-{
-    NVIC->IP[IRQn] = priority << 4;
-}
 
+extern volatile uint32_t ms_counter;
+
+// ------------------------------
+// Habilita EXTI13 (PC13) en NVIC
+// ------------------------------
 void nvic_exti_pc13_button_enable(void)
 {
-    rcc_syscfg_clock_enable();
+    // SYSCFG clock para enrutar EXTI
+    RCC->APB2ENR |= (1U << 0); // SYSCFG
 
-    SYSCFG->EXTICR[3] &= ~(0x000FU << 4);
-    SYSCFG->EXTICR[3] |= (0x0002U << 4);
+    // PC13 -> EXTI13: EXTICR4 bits para la línea 13 (C = 0b10)
+    SYSCFG->EXTICR[3] &= ~(0xFU << 4);
+    SYSCFG->EXTICR[3] |= (0x2U << 4);
 
+    // Desenmascara la línea 13
     EXTI->IMR1 |= (1U << 13);
-
+    // Flanco descendente (botón activo-bajo en Nucleo)
     EXTI->FTSR1 |= (1U << 13);
-    EXTI->RTSR1 &= ~(1U << 13);
+    // Limpia pendiente
+    EXTI->PR1 = (1U << 13);
 
-    nvic_enable_irq(EXTI15_10_IRQn);
-
-    nvic_set_priority(EXTI15_10_IRQn, 1);
+    // Habilita IRQ en NVIC (EXTI15_10)
+    NVIC->ISER[1] = (1U << (EXTI15_10_IRQn - 32));
 }
+
+// ---------------------------------------
+// Habilita interrupción de RX en USART2
+// ---------------------------------------
 void nvic_usart2_irq_enable(void)
 {
-    // Habilitar interrupción de recepción en USART2
-    USART2->CR1 |= (1U << 5); // RXNEIE
-    nvic_enable_irq(USART2_IRQn);
-    nvic_set_priority(USART2_IRQn, 2);
+    // Habilita RXNEIE (interrupción cuando hay dato)
+    USART2->CR1 |= (1U << 5);
+
+    // Habilita IRQ de USART2 en NVIC
+    NVIC->ISER[1] = (1U << (USART2_IRQn - 32));
+}
+
+// ---------------------------------------
+// ISR: Botón B1 (PC13) con debounce
+// ---------------------------------------
+void EXTI15_10_IRQHandler(void)
+{
+    if (EXTI->PR1 & (1U << 13))
+    {
+        static uint32_t last = 0;
+        uint32_t now = ms_counter;
+
+        if ((now - last) > 200)
+        { // 200 ms anti-rebote
+            room_control_on_button_press();
+            last = now;
+        }
+
+        EXTI->PR1 = (1U << 13); // write-1-to-clear
+    }
+}
+
+// ---------------------------------------
+// ISR: USART2 RX -> room_control
+// ---------------------------------------
+void USART2_IRQHandler(void)
+{
+    if (USART2->ISR & (1U << 5))
+    {                                        // RXNE
+        char c = (char)(USART2->RDR & 0xFF); // leer limpia RXNE
+        room_control_on_uart_receive(c);
+    }
 }

@@ -44,6 +44,8 @@ typedef struct
 #define GPIOH_BASE 0x48001C00U
 #define GPIOH ((GPIO_Typedef_t *)GPIOH_BASE)
 
+#define GPIO_MODE_AF 2U // Alternate Function mode
+
 #define LD2_PIN 5U // Pin PA5 (LED)
 #define B1_PIN 13U
 
@@ -52,9 +54,4 @@ void init_gpio(GPIO_Typedef_t *GPIO, uint8_t pin, uint8_t mode, uint8_t type, ui
 void set_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
 void clear_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
 uint8_t read_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
-#define GPIO_MODE_INPUT 0x00U
-#define GPIO_MODE_OUTPUT 0x01U
-#define GPIO_MODE_AF 0x02U
-#define GPIO_MODE_ANALOG 0x03U
-void gpio_toggle_pin(GPIO_Typedef_t *GPIOx, uint8_t pin);
 #endif

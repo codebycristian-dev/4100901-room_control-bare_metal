@@ -1,7 +1,6 @@
 // rcc.h
 #ifndef RCC_H
 #define RCC_H
-
 #include <stdint.h>
 
 typedef struct
@@ -50,7 +49,6 @@ typedef struct
 #define RCC_BASE 0x40021000U
 #define RCC ((RCC_Typedef_t *)RCC_BASE)
 
-void rcc_init(void);
-void rcc_syscfg_clock_enable(void);
 void rcc_tim3_clock_enable(void);
+void rcc_init(void);
 #endif
