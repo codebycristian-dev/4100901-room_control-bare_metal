@@ -27,6 +27,7 @@ set(sources_SRCS ${sources_SRCS}
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/uart.c
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/rcc.c
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/tim.c
+	${CMAKE_CURRENT_SOURCE_DIR}/Src/room_control.c
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/nvic.c
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/systick.c
 	${CMAKE_CURRENT_SOURCE_DIR}/Src/syscall.c

@@ -5,7 +5,6 @@
 #include "nvic.h"
 #include "tim.h" // Agregado: para habilitar IRQs
 
-
 static volatile uint32_t ms_counter = 0;
 char rx_buffer[256];
 uint8_t rx_index = 0;
@@ -25,7 +24,7 @@ int main(void)
     tim3_ch1_pwm_init(1000U);
     tim3_ch1_pwm_set_duty_cycle(100U);
     // <<<
-    
+
     // Habilitar interrupciones externas
     nvic_exti_pc13_button_enable();
     nvic_usart2_irq_enable();
@@ -33,7 +32,7 @@ int main(void)
     // Mensaje de inicio
     uart_send_string("Se inició el programa\r\n");
     // --- Fade PWM PA6 (TIM3_CH1) no bloqueante ---
-  
+
     while (1)
     {
         // --- Fade PWM PA6 (TIM3_CH1) ---
