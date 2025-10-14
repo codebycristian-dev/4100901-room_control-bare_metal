@@ -63,41 +63,27 @@ void room_control_on_uart_receive(char received_char)
     case 'h':
     case 'H':
         tim3_ch1_pwm_set_duty_cycle(100);
-        set_gpio(GPIOA, 5);
-        current_state = ROOM_OCCUPIED;
-        last_action_time = ms_counter;
         uart_send_string("PWM = 100%\r\n");
         break;
 
     case 'l':
     case 'L':
         tim3_ch1_pwm_set_duty_cycle(0);
-        clear_gpio(GPIOA, 5);
-        current_state = ROOM_IDLE;
         uart_send_string("PWM = 0%\r\n");
         break;
 
     case '1': // 10%
         tim3_ch1_pwm_set_duty_cycle(10);
-        set_gpio(GPIOA, 5);
-        current_state = ROOM_OCCUPIED;
-        last_action_time = ms_counter;
         uart_send_string("PWM = 10%\r\n");
         break;
 
     case '5': // 50%
         tim3_ch1_pwm_set_duty_cycle(50);
-        set_gpio(GPIOA, 5);
-        current_state = ROOM_OCCUPIED;
-        last_action_time = ms_counter;
         uart_send_string("PWM = 50%\r\n");
         break;
 
     case '9': // 90%
         tim3_ch1_pwm_set_duty_cycle(90);
-        set_gpio(GPIOA, 5);
-        current_state = ROOM_OCCUPIED;
-        last_action_time = ms_counter;
         uart_send_string("PWM = 90%\r\n");
         break;
 

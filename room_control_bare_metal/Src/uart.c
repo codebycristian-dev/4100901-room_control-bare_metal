@@ -27,8 +27,7 @@ void uart_send(char c)
 
 char uart_receive(void)
 {
-    while (!(USART2->ISR & (1 << 5)))
-        ; // RXNE
+    while (!(USART2->ISR & (1 << 5))) ; // RXNE
     return (char)(USART2->RDR & 0xFF);
 }
 

@@ -1,7 +1,8 @@
 // uart.h
+// import libreries
 #include <stdint.h>
-#include "gpio.h" // Librería GPIO existente
-#include "rcc.h"  // Librería RCC existente
+#include "gpio.h" 
+#include "rcc.h" 
 
 // USART2
 typedef struct
