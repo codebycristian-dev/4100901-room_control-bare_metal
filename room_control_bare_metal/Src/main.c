@@ -23,7 +23,7 @@ int main(void)
 
     // >>> NUEVO: PWM en PA6 (TIM3_CH1, AF2), 1 kHz y duty al 50 %
     tim3_ch1_pwm_init(1000U);
-    tim3_ch1_pwm_set_duty_cycle(50U);
+    tim3_ch1_pwm_set_duty_cycle(100U);
     // <<<
     
     // Habilitar interrupciones externas
@@ -32,9 +32,34 @@ int main(void)
 
     // Mensaje de inicio
     uart_send_string("Se inició el programa\r\n");
-
+    // --- Fade PWM PA6 (TIM3_CH1) no bloqueante ---
+  
     while (1)
     {
+        // --- Fade PWM PA6 (TIM3_CH1) ---
+        static uint8_t fade_duty = 0;
+        static int8_t fade_dir = +1;
+        static uint32_t last_ms = 0;
+
+        if ((ms_counter - last_ms) >= 10U)
+        {
+            last_ms = ms_counter;
+
+            fade_duty = (uint8_t)((int)fade_duty + fade_dir);
+
+            if (fade_duty >= 100U)
+            {
+                fade_duty = 100U;
+                fade_dir = -1;
+            }
+            else if (fade_duty == 0U)
+            {
+                fade_duty = 0U;
+                fade_dir = +1;
+            }
+
+            tim3_ch1_pwm_set_duty_cycle(fade_duty);
+        }
         // Botón presionado (sin interrupción, como respaldo)
         if (read_gpio(GPIOC, 13) != 0)
         {
