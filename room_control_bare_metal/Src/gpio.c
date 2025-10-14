@@ -58,3 +58,10 @@ void gpio_setup_pin(GPIO_Typedef_t *GPIO, uint8_t pin, uint8_t mode, uint8_t af)
         }
     }
 }
+void gpio_toggle_pin(GPIO_Typedef_t *GPIOx, uint8_t pin)
+{
+    if (GPIOx->ODR & (1U << pin))
+        GPIOx->BSRR = (1U << (pin + 16)); // Si estaba en 1 → lo apaga
+    else
+        GPIOx->BSRR = (1U << pin); // Si estaba en 0 → lo enciende
+}

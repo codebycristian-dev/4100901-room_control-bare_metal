@@ -1,4 +1,7 @@
 // systick.h
+#ifndef SYSTICK_H
+#define SYSTICK_H
+
 #include <stdint.h>
 
 typedef struct
@@ -13,3 +16,9 @@ typedef struct
 #define SYSTICK ((SYSTICK_Typedef_t *)SYSTICK_BASE)
 
 void init_systick(void);
+
+/* --- NUEVO --- */
+/* Devuelve el contador de ms desde el arranque */
+uint32_t systick_get_tick(void);
+
+#endif // SYSTICK_H

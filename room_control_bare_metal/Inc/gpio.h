@@ -56,4 +56,5 @@ uint8_t read_gpio(GPIO_Typedef_t *GPIO, uint8_t pin);
 #define GPIO_MODE_OUTPUT 0x01U
 #define GPIO_MODE_AF 0x02U
 #define GPIO_MODE_ANALOG 0x03U
+void gpio_toggle_pin(GPIO_Typedef_t *GPIOx, uint8_t pin);
 #endif
