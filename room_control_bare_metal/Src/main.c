@@ -29,14 +29,15 @@ static void peripherals_init(void)
     init_uart(); // Asumiendo función unificada
     nvic_exti_pc13_button_enable();
     nvic_usart2_irq_enable();
-    tim3_ch1_pwm_init(10); // 1 kHz PWM
+    tim3_ch1_pwm_init(1000); // 1 kHz PWM
 }
 
 int main(void)
 {
     peripherals_init();
     room_control_app_init();
-    uart_send_string("Sistema de Control de Sala Inicializado!\r\n");
+    //uart_send_string("Sistema de Control de Sala Inicializado!\r\n");
+    uart_send_string("Hello World\r\n");
 
     // Bucle principal: procesa eventos
     while (1)

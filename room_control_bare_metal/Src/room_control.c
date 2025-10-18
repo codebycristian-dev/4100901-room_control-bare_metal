@@ -41,7 +41,7 @@ void room_control_on_button_press(void)
         current_state = ROOM_OCCUPIED;
         set_gpio(GPIOA, 5);               // LED integrado ON
         tim3_ch1_pwm_set_duty_cycle(100); // LED PWM al 100%
-        uart_send_string("Estado: OCCUPIED\r\n");
+        uart_send_string("Hello World\r\n");
     }
     else
     {
@@ -72,9 +72,9 @@ void room_control_on_uart_receive(char received_char)
         uart_send_string("PWM = 0%\r\n");
         break;
 
-    case '1': // 10%
-        tim3_ch1_pwm_set_duty_cycle(10);
-        uart_send_string("PWM = 10%\r\n");
+    case '2': // 25%
+        tim3_ch1_pwm_set_duty_cycle(25);
+        uart_send_string("PWM = 25%\r\n");
         break;
 
     case '5': // 50%
@@ -82,9 +82,9 @@ void room_control_on_uart_receive(char received_char)
         uart_send_string("PWM = 50%\r\n");
         break;
 
-    case '9': // 90%
-        tim3_ch1_pwm_set_duty_cycle(90);
-        uart_send_string("PWM = 90%\r\n");
+    case '7': // 75%
+        tim3_ch1_pwm_set_duty_cycle(75);
+        uart_send_string("PWM = 75%\r\n");
         break;
 
     case 'O':
@@ -102,6 +102,24 @@ void room_control_on_uart_receive(char received_char)
         clear_gpio(GPIOA, 5);
         tim3_ch1_pwm_set_duty_cycle(0);
         uart_send_string("Sala vacía\r\n");
+        break;
+    case 'q': // 1 kHz
+        tim3_ch1_pwm_set_frequency(1000);
+        uart_send_string("PWM freq = 1 kHz\r\n");
+        break;
+
+    case 'w': // 10 kHz
+        tim3_ch1_pwm_set_frequency(10000);
+        uart_send_string("PWM freq = 10 kHz\r\n");
+        break;
+
+    case 'e': // 100 kHz
+        tim3_ch1_pwm_set_frequency(100000);
+        uart_send_string("PWM freq = 100 kHz\r\n");
+        break;
+    case 'r': // 10 Hz
+        tim3_ch1_pwm_set_frequency(10);
+        uart_send_string("PWM freq = 10Hz\r\n");
         break;
 
     default:

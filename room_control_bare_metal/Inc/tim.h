@@ -45,5 +45,6 @@ typedef struct
 // Prototipos de funciones
 void tim3_ch1_pwm_init(uint32_t pwm_freq_hz);
 void tim3_ch1_pwm_set_duty_cycle(uint8_t duty_cycle_percent); // duty_cycle en % (0-100)
+void tim3_ch1_pwm_set_frequency(uint32_t pwm_freq_hz);
 
 #endif // TIM_H
